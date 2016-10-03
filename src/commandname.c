@@ -5,14 +5,24 @@
 
 #define SELFPATH_LIMIT 256
 
+#ifdef _WIN32
 #include <windows.h>
+#else
+#include <unistd.h>
+#endif
 
 static mrb_value mrb_command_name(mrb_state* mrb, mrb_value self)
 {
   char path[SELFPATH_LIMIT] = {0};
+#ifdef _WIN32
   if (GetModuleFileName(NULL, path, SELFPATH_LIMIT - 1) == 0) {
     return mrb_nil_value();
   }
+#else
+  if (readlink("/proc/self/exe", path, sizeof(path)) == -1) {
+    return mrb_nil_value();
+  }
+#endif
   return mrb_str_new_cstr(mrb, path);
 }
 
