@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define SELFPATH_LIMIT 256
+#define SELFPATH_LIMIT 4096
 
 #ifdef _WIN32
 #include <windows.h>
